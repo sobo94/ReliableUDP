@@ -120,6 +120,7 @@ int main(int argc, char* argv[])
 {
 	// parse command line
 
+
 	enum Mode
 	{
 		Client,
@@ -129,16 +130,27 @@ int main(int argc, char* argv[])
 	Mode mode = Server;
 	Address address;
 
+	
 	if (argc >= 2)
 	{
+
+		// if Argc = 2 then we will be in Client Mode with UDP.
+		// if Argc = 3 then we will be in Client Mode with UDP And File transfering M 
 		int a, b, c, d;
-#pragma warning(suppress : 4996) 
+		#pragma warning(suppress : 4996) 
 		if (sscanf(argv[1], "%d.%d.%d.%d", &a, &b, &c, &d))
 		{
 			mode = Client;
 			address = Address(a, b, c, d, ServerPort);
 		}
 	}
+
+
+
+
+
+
+
 
 	// initialize
 
