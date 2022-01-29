@@ -247,9 +247,9 @@ int main(int argc, char* argv[])
 			unsigned char packet[PacketSize];
 			memset(packet, 0, sizeof(packet));
 
-					//--------//
-					// Client //
-					// -------//
+					//---------------//
+					//	  Client	 //
+					//---------------//
 			
 			// [Question] Breaking the file into peices? Serialization?
 
