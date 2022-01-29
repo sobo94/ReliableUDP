@@ -24,6 +24,7 @@ const float SendRate = 1.0f / 30.0f;
 const float TimeOut = 10.0f;
 const int PacketSize = 256;
 
+// 
 class FlowControl
 {
 public:
@@ -120,7 +121,8 @@ int main(int argc, char* argv[])
 {
 	// parse command line
 
-
+	// Add 1 more modes, 
+	// Client with FTP.
 	enum Mode
 	{
 		Client,
@@ -135,13 +137,17 @@ int main(int argc, char* argv[])
 	{
 
 		// if Argc = 2 then we will be in Client Mode with UDP.
-		// if Argc = 3 then we will be in Client Mode with UDP And File transfering M 
 		int a, b, c, d;
 		#pragma warning(suppress : 4996) 
 		if (sscanf(argv[1], "%d.%d.%d.%d", &a, &b, &c, &d))
 		{
 			mode = Client;
 			address = Address(a, b, c, d, ServerPort);
+
+			// if Argc = 3 then we will be in Client Mode with UDP And File transfering Protocool.
+			// Set mode to FTPClient. Scan and store the filename from the arguments. 
+			
+
 		}
 	}
 
@@ -172,8 +178,29 @@ int main(int argc, char* argv[])
 
 	if (mode == Client)
 		connection.Connect(address);
+
+				//-----------------------------//
+				//	Client's Tasks go here.	   //
+				//-----------------------------//
+
+	// After being connected, the Client Retrieves the file from disk
+	// the implementation to perform File retrival wiil be inside FileAccess.cpp
+
+
+
+
+	// Create a File Object, the object will have a FTP header of 'some' specified size
+	// The header will be storing the filename, Filesize, Compute Checksum and metaData 
+	// [Question] Ask if metadata is the same as the FTP Header.
+
+
+
 	else
 		connection.Listen();
+		
+		
+
+
 
 	bool connected = false;
 	float sendAccumulator = 0.0f;
@@ -219,6 +246,18 @@ int main(int argc, char* argv[])
 		{
 			unsigned char packet[PacketSize];
 			memset(packet, 0, sizeof(packet));
+
+					//--------//
+					// Client //
+					// -------//
+			
+			// [Question] Breaking the file into peices? Serialization?
+
+
+
+			// Sending the file peices by fitting them into a UDP Packet.  
+
+
 			connection.SendPacket(packet, sizeof(packet));
 			sendAccumulator -= 1.0f / sendRate;
 		}
@@ -227,8 +266,25 @@ int main(int argc, char* argv[])
 		{
 			unsigned char packet[256];
 			int bytes_read = connection.ReceivePacket(packet, sizeof(packet));
+
+
+
 			if (bytes_read == 0)
 				break;
+
+
+					//--------------------------//
+					//			Server			//
+					//--------------------------//
+
+			// Recieves file metadata implementation in revieveFile.cpp
+
+
+			// Recieve file peices (deserialization?)
+
+			// FileAccess.cpp implement SaveDisk 
+
+			// errorDetection.cpp do checksum on the retrieved File to verify 
 		}
 
 		// show packets that were acked this frame
